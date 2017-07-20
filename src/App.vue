@@ -1,11 +1,63 @@
 <template>
   <div id="app">
-    <h1>{{ msg }}</h1>
-    <ul>
-      <li v-for="ad of ads">
-        {{ ad.id }}: {{ ad.height }}x{{ ad.columns }} - {{ ad.business }} by {{ ad.rep }}
-      </li>
-    </ul>
+    <div class="container">
+      <h1 class="title">{{ msg }}</h1>
+
+      <table class="table is-narrow">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Business</th>
+            <th>Rep</th>
+            <th>Height</th>
+            <th>Columns</th>
+            <th>Position</th>
+            <th>Info</th>
+            <th>Repeat</th>
+            <th>Payment</th>
+            <th>Price</th>
+            <th></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tfoot>
+          <tr>
+            <th>ID</th>
+            <th>Business</th>
+            <th>Rep</th>
+            <th>Height</th>
+            <th>Columns</th>
+            <th>Position</th>
+            <th>Info</th>
+            <th>Repeat</th>
+            <th></th>
+            <th></th>
+          </tr>
+        </tfoot>
+        <tbody>
+          <tr v-for="ad of ads" v-if="ad.placed == true">
+            <td>{{ ad.id }}</td>
+            <td>{{ ad.customer }}</td>
+            <td>{{ ad.rep }}</td>
+            <td>{{ ad.height }}</td>
+            <td>{{ ad.columns }}</td>
+            <td>{{ ad.position }}</td>
+            <td>?</td>
+            <td>?</td>
+            <td>
+              <a class="button is-small is-info">
+                Approve
+              </a>
+            </td>
+            <td>
+              <a class="button is-small is-primary">
+                Place
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 
@@ -23,7 +75,6 @@ export default {
     axios.get('http://localhost:9393/api/ads')
       .then(response => {
         this.ads = response.data
-        console.log(response.data)
       })
       .catch(e => {
         this.errors.push(e)
@@ -32,30 +83,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-
-h1, h2 {
-  font-weight: normal;
-}
-
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-li {
-  margin: 0 10px;
-}
-
-a {
-  color: #42b983;
-}
+<style lang="sass">
+.table
+  font-size: .9em
 </style>
