@@ -1,6 +1,17 @@
 <template>
   <div id="app">
     <div class="container">
+      <article class="message is-danger" v-for="error of errors" v-if="errors">
+        <div class="message-header">
+          <p>Error: {{ error.message }}</p>
+          <button class="delete"></button>
+        </div>
+        <div class="message-body">
+          <p>Response: {{ error.response }}</p>
+          <p>Request: {{ error.request }}</p>
+          <p>{{ error }}</p>
+        </div>
+      </article>
       <h1 class="title">{{ msg }}</h1>
 
       <table class="table is-narrow">
@@ -14,8 +25,6 @@
             <th>Position</th>
             <th>Info</th>
             <th>Repeat</th>
-            <th>Payment</th>
-            <th>Price</th>
             <th></th>
             <th></th>
           </tr>
@@ -35,25 +44,27 @@
           </tr>
         </tfoot>
         <tbody>
-          <tr v-for="ad of ads" v-if="ad.placed == true">
-            <td>{{ ad.id }}</td>
-            <td>{{ ad.customer }}</td>
-            <td>{{ ad.rep }}</td>
-            <td>{{ ad.height }}</td>
-            <td>{{ ad.columns }}</td>
-            <td>{{ ad.position }}</td>
-            <td>?</td>
-            <td>?</td>
-            <td>
-              <a class="button is-small is-info">
-                Approve
-              </a>
-            </td>
-            <td>
-              <a class="button is-small is-primary">
-                Place
-              </a>
-            </td>
+          <tr v-for="ad of ads">
+            <template v-if="ad.placed == false">
+              <td>{{ ad.id }}</td>
+              <td>{{ ad.customer }}</td>
+              <td>{{ ad.rep }}</td>
+              <td>{{ ad.height }}</td>
+              <td>{{ ad.columns }}</td>
+              <td>{{ ad.position }}</td>
+              <td>?</td>
+              <td>?</td>
+              <td>
+                <a class="button is-small is-info" v-on:click="approveAd(ad.id)">
+                  Approve
+                </a>
+              </td>
+              <td>
+                <a class="button is-small is-primary">
+                  Place
+                </a>
+              </td>
+            </template>
           </tr>
         </tbody>
       </table>
@@ -62,23 +73,38 @@
 </template>
 
 <script>
-import axios from 'axios';
+import {HTTP} from './http-common';
 
 export default {
-  data: () => ({
-    ads: [],
-    errors: [],
-    msg: "Ad list"
-  }),
-
-  created() {
-    axios.get('http://localhost:9393/api/ads')
-      .then(response => {
-        this.ads = response.data
-      })
-      .catch(e => {
+  data: function () {
+    return {
+      ads: [],
+      errors: [],
+      msg: "Ad list"
+    }
+  },
+  methods: {
+    loadData: function () {
+      HTTP.get('ads')
+        .then(response => {
+          this.ads = response.data
+        })
+        .catch(e => {
+          this.errors.push(e)
+        })
+    },
+    approveAd: function (id) {
+      HTTP.post('ad/approve/', {
+        ad_id: id
+      }).then(response => {
+        console.log(response)
+      }).catch(e => {
         this.errors.push(e)
       })
+    },
+  },
+  mounted: function () {
+    this.loadData();
   }
 }
 </script>
