@@ -1965,6 +1965,26 @@ input[type="submit"].button {
     .table tr.is-selected th {
       border-color: #fff;
       color: currentColor; }
+  .table tr.is-approved {
+    background-color: #00d1b2;
+    color: #fff; }
+    .table tr.is-approved a,
+    .table tr.is-approved strong {
+      color: currentColor; }
+    .table tr.is-approved td,
+    .table tr.is-approved th {
+      border-color: #fff;
+      color: currentColor; }
+  .table tr.is-placed {
+    background-color: #00d1b2;
+    color: #fff; }
+    .table tr.is-placed a,
+    .table tr.is-placed strong {
+      color: currentColor; }
+    .table tr.is-placed td,
+    .table tr.is-placed th {
+      border-color: #fff;
+      color: currentColor; }
   .table thead td,
   .table thead th {
     border-width: 0 0 2px;
