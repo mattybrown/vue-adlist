@@ -116,6 +116,10 @@ export default {
   },
   mounted: function () {
     this.loadData();
+
+    setInterval(function() {
+      this.loadData();
+    }.bind(this), 30000);
   }
 }
 </script>
